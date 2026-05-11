@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Executivo de Gestão Operacional - Abril 2026</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Outfit:wght@400;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #002b5b;
+            --accent: #d4af37;
+            --text-dark: #1a1a1a;
+            --text-light: #444;
+            --bg-light: #f9f9f9;
+            --border: #ddd;
+            --success: #1e7e34;
+            --danger: #b21f2d;
+        }
+
+        /* Configuração de Página para Impressão */
+        @page {
+            size: A4;
+            margin: 0;
+            /* Remove cabeçalhos e rodapés do navegador (URL, data) */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.4;
+            color: var(--text-dark);
+            background-color: #f0f2f5;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /* Container que simula a folha e contém as margens internas */
+        .report-container {
+            width: 210mm;
+            margin: 0 auto;
+            background: white;
+            padding: 15mm;
+            /* Margem interna real do documento */
+            min-height: 297mm;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .report-container {
+                width: 100%;
+                margin: 0;
+                padding: 12mm;
+                box-shadow: none;
+                min-height: 0;
+            }
+
+            .no-print {
+                display: none;
+            }
+
+            /* Forçar quebra de página se necessário, mas manter blocos juntos */
+            .section-block {
+                page-break-inside: avoid;
+                margin-bottom: 15px;
+            }
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--primary);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .company-logo {
+            font-size: 24px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .report-title-box {
+            text-align: right;
+        }
+
+        .report-title-box h1 {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-light);
+        }
+
+        .report-title-box p {
+            font-size: 10px;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* Capa Compacta */
+        .cover-section {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .cover-section h2 {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 10px 0;
+            line-height: 1.1;
+        }
+
+        .cover-section .subtitle {
+            font-size: 16px;
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .cover-meta {
+            font-size: 13px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            border-left: 5px solid var(--accent);
+            padding-left: 10px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        /* KPIs */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .kpi-box {
+            background: var(--bg-light);
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .kpi-box .label {
+            font-size: 8px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .kpi-box .value {
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        /* Tabelas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 11px;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            text-align: left;
+            padding: 8px 10px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:nth-child(even) {
+            background: #fcfcfc;
+        }
+
+        /* Destaques */
+        .highlight-box {
+            background: #fffcf0;
+            border-left: 5px solid var(--accent);
+            padding: 12px;
+            border-radius: 0 6px 6px 0;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .highlight-box h4 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        /* Planejamento */
+        .plan-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .plan-number {
+            width: 30px;
+            height: 30px;
+            background: var(--primary);
+            color: white;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .plan-content h4 {
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+
+        .plan-content p {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        /* Assinaturas */
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .sig-box {
+            width: 200px;
+            border-top: 1px solid var(--primary);
+            text-align: center;
+            padding-top: 5px;
+            font-size: 11px;
+        }
+
+        /* Botão */
+        .btn-print {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        .status-pill {
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-pill.success {
+            background: #e6f4ea;
+            color: #1e7e34;
+        }
+
+        .status-pill.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-pill.danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button class="btn-print no-print" onclick="window.print()">IMPRIMIR RELATÓRIO PDF</button>
+
+    <div class="report-container">
+        <!-- HEADER -->
+        <div class="header-top">
+            <div class="company-logo">MOV FIBRA</div>
+            <div class="report-title-box">
+                <h1>Relatório de Gestão Operacional</h1>
+                <p>Abril 2026</p>
+            </div>
+        </div>
+
+        <!-- CAPA -->
+        <div class="cover-section">
+            <h2>Performance Técnica & Eficiência Operacional</h2>
+            <p class="subtitle">Análise consolidada de volume O.S e gestão estratégica de ativos.</p>
+            <div class="cover-meta">
+                <p>Preparado para: <strong>Diretora Maria Carolina</strong></p>
+                <p>Elaborado por: <strong>Gustavo Bismak</strong></p>
+                <p style="margin-top: 5px; font-size: 11px; color: #999;">Data de Emissão: 04/05/2026</p>
+            </div>
+        </div>
+
+        <!-- 1. SUMÁRIO E VISÃO GERAL -->
+        <div class="section-block">
+            <h3 class="section-title">1. Sumário Executivo</h3>
+            <p style="margin-bottom: 12px; font-size: 12px; text-align: justify;">
+                O ciclo de Abril consolidou a <strong>MOV FIBRA</strong> com um volume total de <strong>1.149 Ordens de
+                    Serviço</strong>. Operamos com alta intensidade tanto na expansão da base quanto na manutenção. O
+                foco estratégico atual é a otimização logística para reduzir o TME global de 45min para 31min.
+            </p>
+
+            <div style="display: flex; gap: 15px; margin-bottom: 25px;">
+                <div
+                    style="flex: 1; background: var(--primary); color: white; padding: 15px; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 10px; text-transform: uppercase; opacity: 0.8;">Volume Total Consolidado
+                    </div>
+                    <div style="font-size: 24px; font-weight: 800;">1.149</div>
+                </div>
+                <div
+                    style="flex: 1; background: #eef2f7; border: 1px solid var(--border); padding: 15px; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 10px; text-transform: uppercase; color: #666;">Suporte Técnico</div>
+                    <div style="font-size: 24px; font-weight: 800; color: var(--primary);">677</div>
+                    <div style="font-size: 10px; color: var(--success); font-weight: 700;">59% do Total</div>
+                </div>
+                <div
+                    style="flex: 1; background: #eef2f7; border: 1px solid var(--border); padding: 15px; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 10px; text-transform: uppercase; color: #666;">Instalações & Mudanças</div>
+                    <div style="font-size: 24px; font-weight: 800; color: var(--primary);">472</div>
+                    <div style="font-size: 10px; color: var(--accent); font-weight: 700;">41% do Total</div>
+                </div>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-box">
+                    <div class="label">Conformidade SLA</div>
+                    <div class="value">81%</div>
+                    <div style="font-size: 9px; color: var(--success); font-weight: 700;">Meta: 90%</div>
+                </div>
+                <div class="kpi-box">
+                    <div class="label">Eficiência TME</div>
+                    <div class="value">69%</div>
+                    <div style="font-size: 9px; color: var(--accent); font-weight: 700;">Meta: 100%</div>
+                </div>
+                <div class="kpi-box">
+                    <div class="label">Aproveitamento Ativos</div>
+                    <div class="value">85%</div>
+                    <div style="font-size: 9px; color: var(--danger); font-weight: 700;">⚠ 15% Perda</div>
+                </div>
+                <div class="kpi-box">
+                    <div class="label">Investimento (Capex)</div>
+                    <div class="value">R$ 261k</div>
+                    <div style="font-size: 9px; color: #666;">Ticket: R$ 227</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. DETALHAMENTO DE SUPORTE -->
+        <div class="section-block">
+            <h3 class="section-title">2. Detalhamento Operacional: Suporte (677 O.S)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Categoria de Assunto</th>
+                        <th>Volume</th>
+                        <th>Severidade</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sem Conexão (Lógico/Físico)</td>
+                        <td>192</td>
+                        <td>Baixa</td>
+                        <td><span class="status-pill success">Controlado</span></td>
+                    </tr>
+                    <tr>
+                        <td>Link Loss (Atenuação de Fibra)</td>
+                        <td>173</td>
+                        <td>Média</td>
+                        <td><span class="status-pill warning">Monitorando</span></td>
+                    </tr>
+                    <tr>
+                        <td>Lentidão / Reclamação Wi-Fi</td>
+                        <td>131</td>
+                        <td>Baixa</td>
+                        <td><span class="status-pill success">Estável</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Troca de Equipamento (Bancada)</strong></td>
+                        <td><strong>104</strong></td>
+                        <td><strong>Alta</strong></td>
+                        <td><span class="status-pill danger">Crítico</span></td>
+                    </tr>
+                    <tr>
+                        <td>Serviço de Rede / Externo</td>
+                        <td>80</td>
+                        <td>Média</td>
+                        <td><span class="status-pill warning">Manutenção</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight-box">
+                <h4>Insight Estratégico: Logística de Quadrantes</h4>
+                <p>
+                    O deslocamento inter-bairros consome <strong>35% da jornada útil</strong>. A meta de 31 min exige
+                    roteirização geográfica estrita para eliminar o tempo morto em trânsito.
+                </p>
+            </div>
+        </div>
+
+        <!-- 3. ANÁLISE DE SLA (SUPORTE) -->
+        <div class="section-block">
+            <h3 class="section-title">3. Análise de Tempo de Resposta (SLA Suporte)</h3>
+            <p style="margin-bottom: 15px; font-size: 12px; color: #555;">
+                Distribuição do tempo decorrido desde a abertura do chamado até a finalização.
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+                <div>
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px;">
+                        <span>Até 4 Horas (Resposta Ultra-Rápida)</span>
+                        <strong>234 O.S (34.6%)</strong>
+                    </div>
+                    <div style="width: 100%; height: 8px; background: #eee; border-radius: 4px; overflow: hidden;">
+                        <div style="width: 34.6%; height: 100%; background: var(--success);"></div>
+                    </div>
+                </div>
+                <div>
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px;">
+                        <span>De 12h à 24h (Limite de SLA)</span>
+                        <strong>190 O.S (28.1%)</strong>
+                    </div>
+                    <div style="width: 100%; height: 8px; background: #eee; border-radius: 4px; overflow: hidden;">
+                        <div style="width: 28.1%; height: 100%; background: var(--warning);"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                style="background: #fdfdfd; border: 1px solid #eee; padding: 10px; border-radius: 6px; font-size: 11px;">
+                <strong>Nota de Gestão:</strong> 81% dos atendimentos são concluídos no mesmo dia.
+            </div>
+        </div>
+
+        <!-- 4. DETALHAMENTO DE INSTALAÇÕES -->
+        <div class="section-block">
+            <h3 class="section-title">4. Expansão de Base: Instalações (472 O.S)</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div
+                    style="background: var(--bg-light); padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
+                    <div style="font-size: 9px; text-transform: uppercase; color: #666;">Instalações Novas</div>
+                    <div style="font-size: 18px; font-weight: 800;">403</div>
+                    <div style="font-size: 9px; color: var(--success);">85% das ativações</div>
+                </div>
+                <div
+                    style="background: var(--bg-light); padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
+                    <div style="font-size: 9px; text-transform: uppercase; color: #666;">Mudanças de Endereço</div>
+                    <div style="font-size: 18px; font-weight: 800;">69</div>
+                    <div style="font-size: 9px; color: var(--accent);">15% das ativações</div>
+                </div>
+            </div>
+            <p style="font-size: 12px; color: #555; text-align: justify;">
+                A eficiência de instalação manteve-se alta em Abril, com um ticket médio de Capex de R$ 227 por
+                ativação, refletindo o uso otimizado de materiais e hardware de alta performance.
+            </p>
+        </div>
+
+        <!-- 5. ELITE TÉCNICA -->
+        <div class="section-block">
+            <h3 class="section-title">5. Elite Técnica (Top Performers)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Colaborador</th>
+                        <th>O.S</th>
+                        <th>TME Real</th>
+                        <th>Feedback</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Gervasio Rafael</strong></td>
+                        <td>92</td>
+                        <td>42 min</td>
+                        <td>Líder absoluto em volume de entregas.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ronald de Almeida</strong></td>
+                        <td>72</td>
+                        <td>40 min</td>
+                        <td>Consistência e qualidade técnica.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Arlisson Viana</strong></td>
+                        <td>51</td>
+                        <td>32 min</td>
+                        <td>Referência em agilidade (Nível Ultra).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Marcelo Silva</strong></td>
+                        <td>47</td>
+                        <td>32 min</td>
+                        <td>Benchmark operacional para a meta.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 6. FINANCEIRO -->
+        <div class="section-block">
+            <h3 class="section-title">6. Gestão de Materiais & Capex</h3>
+            <div
+                style="background: var(--bg-light); padding: 12px; border-radius: 6px; border: 1px solid var(--border); margin-bottom: 12px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <p style="font-size: 10px; color: #666; font-weight: 700; text-transform: uppercase;">Hardware
+                            Wi-Fi 6</p>
+                        <p style="font-size: 15px; font-weight: 800; color: var(--primary);">R$ 72.603</p>
+                    </div>
+                    <div>
+                        <p style="font-size: 10px; color: #666; font-weight: 700; text-transform: uppercase;">Troca de
+                            Ativos</p>
+                        <p style="font-size: 15px; font-weight: 800; color: var(--danger);">R$ 52.644</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. PLANEJAMENTO -->
+        <div class="section-block">
+            <h3 class="section-title">7. Planejamento Tático: Maio 2026</h3>
+            <div class="plan-item">
+                <div class="plan-number">01</div>
+                <div class="plan-content">
+                    <h4>Roteirização Geográfica</h4>
+                    <p>Foco em manter o técnico em um raio de 5km para reduzir 20% do TME.</p>
+                </div>
+            </div>
+            <div class="plan-item">
+                <div class="plan-number">02</div>
+                <div class="plan-content">
+                    <h4>Auditoria de Bancada</h4>
+                    <p>Redução de trocas desnecessárias de ativos em 15%.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONCLUSÃO -->
+        <div class="section-block"
+            style="margin-top: 20px; padding: 12px; background: var(--bg-light); border-radius: 8px; border: 1px solid var(--border);">
+            <p style="font-size: 12px; text-align: justify; color: #333;">
+                Com a disciplina logística e a auditoria de ativos propostas, garantiremos uma operação veloz, lucrativa
+                e sustentável.
+            </p>
+        </div>
+
+        <!-- ASSINATURAS -->
+        <div class="signature-section">
+            <div class="sig-box">
+                <strong>Gustavo Bismak</strong>
+                <p>Gestor de Operações</p>
+            </div>
+            <div class="sig-box">
+                <strong>Maria Carolina</strong>
+                <p>Diretora</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
