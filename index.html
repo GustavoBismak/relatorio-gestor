@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Gestão - MOV FIBRA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Outfit:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #002b5b;
+            --primary-light: #004085;
+            --accent: #d4af37;
+            --text-dark: #1a1a1a;
+            --text-white: #ffffff;
+            --bg-gradient: linear-gradient(135deg, #002b5b 0%, #00152e 100%);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        /* Background shapes for depth */
+        .shape {
+            position: absolute;
+            z-index: -1;
+            filter: blur(80px);
+            border-radius: 50%;
+        }
+
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent);
+            opacity: 0.1;
+            top: -100px;
+            right: -100px;
+        }
+
+        .shape-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary-light);
+            opacity: 0.2;
+            bottom: -50px;
+            left: -50px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 90%;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05));
+            pointer-events: none;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .icon-box {
+            transform: scale(1.1) rotate(5deg);
+            background: var(--accent);
+        }
+
+        .icon-box svg {
+            width: 40px;
+            height: 40px;
+            fill: var(--accent);
+            transition: fill 0.3s ease;
+        }
+
+        .card:hover .icon-box svg {
+            fill: var(--primary);
+        }
+
+        .card h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+
+        .badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: var(--primary);
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 50px;
+            text-transform: uppercase;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 2rem;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+            border-top: 1px solid var(--glass-border);
+            width: 100%;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .logo { font-size: 2rem; }
+            .portal-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+
+    <main class="container">
+        <div class="logo">MOV FIBRA</div>
+        <p class="subtitle">Sistema Integrado de Relatórios e Performance Técnica</p>
+
+        <div class="portal-grid">
+            <!-- Card Relatório Executivo -->
+            <a href="relatorio_executivo_final.html" class="card">
+                <span class="badge">Abril 2026</span>
+                <div class="icon-box">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M16,11V13H8V11H16M16,15V17H8V15H16Z" />
+                    </svg>
+                </div>
+                <h2>Relatório Executivo</h2>
+                <p>Análise consolidada de performance técnica, eficiência operacional e planejamento estratégico para diretoria.</p>
+            </a>
+
+            <!-- Card Dashboard de Gestão -->
+            <a href="dashboard_gestao.html" class="card">
+                <div class="icon-box">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M13,3V9H21V3H13M13,21H21V15H13V21M3,21H11V11H3V21M3,9H11V3H3V9Z" />
+                    </svg>
+                </div>
+                <h2>Dashboard de Gestão</h2>
+                <p>Visualização interativa de KPIs em tempo real, volume de O.S por bairro e métricas de elite técnica.</p>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 MOV FIBRA - Departamento de Operações | Elaborado por Gustavo Bismak
+    </footer>
+</body>
+
+</html>
