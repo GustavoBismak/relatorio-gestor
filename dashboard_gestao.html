@@ -305,22 +305,22 @@
         <div class="kpi-wrapper">
             <div class="kpi-card" style="background: var(--primary); border: none;">
                 <div class="kpi-label" style="color: rgba(255,255,255,0.7)">Volume Total Geral</div>
-                <div class="kpi-value" style="color: white">1.149</div>
+                <div class="kpi-value" style="color: white">2.006</div>
                 <div class="kpi-trend" style="color: var(--accent-color)">Consolidado Abril</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-label">Suporte Técnico</div>
-                <div class="kpi-value">677</div>
-                <div class="kpi-trend up">59% do Volume</div>
+                <div class="kpi-value">1.565</div>
+                <div class="kpi-trend up">78% do Volume</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-label">Instalações & Mudanças</div>
-                <div class="kpi-value">472</div>
-                <div class="kpi-trend up">41% do Volume</div>
+                <div class="kpi-value">441</div>
+                <div class="kpi-trend up">22% do Volume</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-label">Conformidade SLA</div>
-                <div class="kpi-value">81%</div>
+                <div class="kpi-value">70%</div>
                 <div class="kpi-trend down">⚠ Meta: 90%</div>
             </div>
             <div class="kpi-card">
@@ -455,6 +455,27 @@
             </div>
         </div>
 
+        <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr 1.5fr; margin-top: 20px;">
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">⏱️ SLA: Instalação</div>
+                </div>
+                <canvas id="slaInstallChart" height="180"></canvas>
+            </div>
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">⏱️ SLA: Suporte</div>
+                </div>
+                <canvas id="slaSupportChart" height="180"></canvas>
+            </div>
+            <div class="panel">
+                <div class="panel-header" style="border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; margin-bottom: 15px;">
+                    <div class="panel-title" style="color: var(--accent-color)">📊 Consolidado Geral (SLA 24h)</div>
+                </div>
+                <canvas id="slaTotalChart" height="180"></canvas>
+            </div>
+        </div>
+
         <div class="material-panel panel">
             <div class="cost-card">
                 <h4>Hardware Wi-Fi 6 (AX3000)</h4>
@@ -521,6 +542,86 @@
                 maintainAspectRatio: false,
                 plugins: {
                     legend: { position: 'right', labels: { color: '#8e9aaf', boxWidth: 12 } }
+                }
+            }
+        });
+
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { 
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(5, 10, 15, 0.9)',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    borderColor: 'var(--accent-color)',
+                    borderWidth: 1
+                }
+            },
+            scales: {
+                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8e9aaf' } },
+                x: { grid: { display: false }, ticks: { color: '#8e9aaf', font: { size: 9 } } }
+            }
+        };
+
+        const labels = ['Até 4H', '4-8H', '8-12H', '12-24H', '24-48H', '48-72H', '> 72H'];
+
+        // SLA Support Chart (Primeiro Envio)
+        const ctxSlaSupport = document.getElementById('slaSupportChart').getContext('2d');
+        new Chart(ctxSlaSupport, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: [446, 210, 70, 447, 218, 76, 98],
+                    backgroundColor: 'rgba(0, 242, 254, 0.5)',
+                    borderRadius: 4
+                }]
+            },
+            options: commonOptions
+        });
+
+        // SLA Install Chart (Segundo Envio)
+        const ctxSlaInstall = document.getElementById('slaInstallChart').getContext('2d');
+        new Chart(ctxSlaInstall, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: [76, 57, 11, 81, 102, 60, 54],
+                    backgroundColor: 'rgba(79, 172, 254, 0.5)',
+                    borderRadius: 4
+                }]
+            },
+            options: commonOptions
+        });
+
+        // SLA Total Chart (Soma)
+        const ctxSlaTotal = document.getElementById('slaTotalChart').getContext('2d');
+        new Chart(ctxSlaTotal, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Suporte',
+                    data: [446, 210, 70, 447, 218, 76, 98],
+                    backgroundColor: 'rgba(0, 242, 254, 0.3)',
+                    stack: 'Stack 0',
+                }, {
+                    label: 'Instalação',
+                    data: [76, 57, 11, 81, 102, 60, 54],
+                    backgroundColor: 'rgba(79, 172, 254, 0.6)',
+                    stack: 'Stack 0',
+                }]
+            },
+            options: {
+                ...commonOptions,
+                plugins: { ...commonOptions.plugins, legend: { display: true, position: 'top', labels: { color: '#8e9aaf', boxWidth: 10, font: { size: 10 } } } },
+                scales: {
+                    ...commonOptions.scales,
+                    x: { ...commonOptions.scales.x, stacked: true },
+                    y: { ...commonOptions.scales.y, stacked: true }
                 }
             }
         });
